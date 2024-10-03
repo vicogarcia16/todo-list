@@ -1,0 +1,4 @@
+flet
+sqlalchemy
+python-dotenv
+psycopg2
