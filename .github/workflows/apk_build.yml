@@ -38,6 +38,8 @@ jobs:
     - name: Install Python Dependencies
       run: |
         python -m pip install --upgrade pip wheel
+        pip install --no-binary :all: psycopg2
+        pip install --no-binary :all: greenlet
         pip install -r requirements.txt
 
     - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
