@@ -1,4 +1,4 @@
 flet==0.25.0.dev3382
 SQLAlchemy==2.0.35
 python-dotenv==1.0.1
-psycopg-binary==3.2.3
+psycopg2-binary==2.9.9
