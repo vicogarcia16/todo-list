@@ -20,6 +20,6 @@ test_sources = [
     "tests",
 ]
 requires = [
-    "flet", "sqlalchemy", "python-dotenv", "psycopg2"
+    "flet"
 ]
 
