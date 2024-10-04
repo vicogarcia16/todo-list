@@ -8,6 +8,7 @@ flet = "*"
 sqlalchemy = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+supabase = "*"
 
 [dev-packages]
 

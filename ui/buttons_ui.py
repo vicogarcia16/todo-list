@@ -1,6 +1,7 @@
 import flet as ft
 from actions.task_actions import add_clicked, delete_checked_tasks
 from db.db_task import load_tasks
+import sys
 
 def create_control_panel(page, task_column):
     new_task = ft.TextField(hint_text="What needs to be done?", width=225,
@@ -29,7 +30,7 @@ def create_control_panel(page, task_column):
 def create_close_button(page):
     close_button = ft.IconButton(
         ft.icons.CLOSE_OUTLINED,
-        on_click=lambda e: page.window.close(),
+        on_click=lambda e: sys.exit(),
         icon_size=35,
         icon_color=ft.colors.RED,
         visible=False  # Inicialmente oculto

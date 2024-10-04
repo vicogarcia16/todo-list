@@ -1,19 +1,25 @@
-from db.database import SessionLocal
-from db.models import Task
-from datetime import datetime, timezone
+from db.database import get_db
 
 def load_tasks():
-    with SessionLocal() as session:
-        return session.query(Task).all()
+    supabase = get_db()
+    response = supabase.table('tasks').select('*').execute()
+    return response.data
 
 def save_task(task):
-    with SessionLocal() as session:
-        session.add(task)
-        session.commit()
+    supabase = get_db()
+    # Verifica si la tarea ya tiene un ID
+    if "id" in task and task["id"]:
+        # Si la tarea existe, actualiza la tarea
+        response = supabase.table('tasks').update(task).eq('id', task['id']).execute()
+    else:
+        # Si la tarea no tiene un ID, inserta la tarea
+        response = supabase.table('tasks').insert(task).execute()
+        # Obtén el ID asignado por la base de datos
+        task["id"] = response.data[0]["id"]
+    return task
 
 def delete_task(checked_ids):
-    with SessionLocal() as session:
-        tasks_to_delete = session.query(Task).filter(Task.id.in_(checked_ids)).all()
-        for task_to_delete in tasks_to_delete:
-            session.delete(task_to_delete)
-        session.commit()
+    supabase = get_db()
+    for id in checked_ids:
+        response = supabase.table('tasks').delete().eq('id', id).execute()
+    return response

@@ -1,12 +1,8 @@
 import flet as ft
 from db.db_task import load_tasks
-from db import models
-from db.database import engine
 from config.page import config_page_sf
 from ui.task_ui import add_task_to_column
 from ui.buttons_ui import create_control_panel, create_close_button
-
-models.Base.metadata.create_all(engine)
 
 def main(page: ft.Page):
     page.title = "TODO List"

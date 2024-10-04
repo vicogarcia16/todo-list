@@ -1,14 +1,17 @@
 from db.db_task import save_task, load_tasks, delete_task
 from ui.task_ui import add_task_to_column
-from db import models
+from datetime import datetime, timezone
 
 def add_clicked(e, page, task_column, new_task):
     label = new_task.value.strip()
     if label:
-        task = models.Task(label=label, completed=False)
-        save_task(task)
-        task = load_tasks()[-1]
-        add_task_to_column(page, task_column, task)
+        task = {
+            "label": label,
+            "completed": False,
+            "created": datetime.now(timezone.utc).isoformat()
+        }
+        saved_task = save_task(task)  # Guardar y obtener la tarea con ID
+        add_task_to_column(page, task_column, saved_task)
         new_task.value = ""
         page.update()
 
@@ -26,7 +29,7 @@ def delete_checked_tasks(e, page, task_column, tasks):
     tasks.extend(load_tasks())
 
     for task in tasks:
-        if not task.completed:
+        if not task["completed"]:
             add_task_to_column(page, task_column, task)
 
     page.update()
