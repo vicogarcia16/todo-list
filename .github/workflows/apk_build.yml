@@ -29,6 +29,13 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install pip and Python dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libpq-dev python3-dev
+        python -m pip install --upgrade pip wheel
+        pip install supabase python-dotenv flet
 
     - name: Cache pip
       uses: actions/cache@v2
@@ -37,17 +44,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-
-    - name: Install System Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential libpq-dev python3-dev
-
-    - name: Install Python Dependencies
-      run: |
-        python -m pip install --upgrade pip wheel
-        pip install supabase python-dotenv flet
-        pip install -r requirements.txt
 
     - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
       uses: subosito/flutter-action@v2
