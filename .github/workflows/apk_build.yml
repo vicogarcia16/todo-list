@@ -21,6 +21,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        dependency: [ "flet", "python-dotenv", "supabase" ]
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -34,9 +38,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ matrix.dependency }}-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-pip-
+          ${{ runner.os }}-pip-${{ matrix.dependency }}-
 
     - name: Install System Dependencies
       run: |
@@ -46,7 +50,12 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip wheel
-        pip install -r requirements.txt
+        pip install ${{ matrix.dependency }}
+
+    - name: Install Project Requirements
+      if: ${{ matrix.dependency == 'supabase' }}
+      run: |
+        python -m pip install -r requirements.txt
 
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
