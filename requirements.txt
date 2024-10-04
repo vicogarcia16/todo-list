@@ -1,4 +1,3 @@
 flet
 SQLAlchemy
 python-dotenv
-psycopg2
